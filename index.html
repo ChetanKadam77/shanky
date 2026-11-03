@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A Magical Birthday</title>
+  <meta name="description" content="A magical, slightly chaotic birthday celebration.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="magic" aria-hidden="true"></canvas>
+  <div id="balloons" aria-hidden="true"></div>
+
+  <!-- Customise panel -->
+  <button id="cfg-toggle" class="cfg-toggle" aria-expanded="false" aria-controls="cfg-panel" title="Customise">&#9881; Customise</button>
+  <aside id="cfg-panel" class="cfg-panel" hidden>
+    <h3>Cast a Personalisation Charm</h3>
+    <label>Birthday wizard's name
+      <input id="cfg-name" type="text" maxlength="24" placeholder="e.g. Ron">
+    </label>
+    <label>Turning (age)
+      <input id="cfg-age" type="number" min="1" max="120" placeholder="e.g. 30">
+    </label>
+    <label>Birthday date
+      <input id="cfg-date" type="date">
+    </label>
+    <div class="cfg-row">
+      <button class="btn" id="cfg-apply" type="button">Apply</button>
+      <button class="btn ghost" id="cfg-copy" type="button">Copy share link</button>
+    </div>
+    <p id="cfg-status" class="cfg-status" aria-live="polite"></p>
+  </aside>
+
+  <!-- Owl post letter -->
+  <div id="letter-overlay">
+    <div class="letter" id="letter">
+      <div class="crest">&#9876;</div>
+      <h2>HOGWARTS SCHOOL OF<br>FRIENDSHIP &amp; MISCHIEF</h2>
+      <p class="muted">Headmaster: Prof. A. Dumbledrinks</p>
+      <p>Dear <b class="js-name">Wizard</b>,</p>
+      <p>We are pleased to inform you that you have been accepted for another year of life.
+        Term begins <b>today</b>. Please bring: one cake, a sense of humour and
+        absolutely no excuses for skipping the party.</p>
+      <p class="muted">We await your owl by 5&nbsp;PM (or whenever the chai is ready).</p>
+      <button id="open-letter" class="seal" aria-label="Break the wax seal">
+        <span>Break the<br>seal</span>
+      </button>
+    </div>
+  </div>
+
+  <header class="hero" id="top">
+    <div class="owl owl-1" aria-hidden="true">🦉</div>
+    <div class="owl owl-2" aria-hidden="true">🦉</div>
+    <p class="eyebrow">By order of the Ministry of Magic (and your best friends)</p>
+    <h1><span class="js-title">Happy Birthday</span></h1>
+    <h1 class="name js-name-big">Wizard</h1>
+    <figure class="portrait" id="portrait">
+      <div class="frame">
+        <img id="portrait-img" alt="" hidden>
+        <div class="portrait-ph" id="portrait-ph">
+          <span aria-hidden="true">&#128247;</span>
+          <small>Magical portrait<br>coming soon</small>
+        </div>
+      </div>
+      <figcaption class="js-portrait-cap">The Birthday Wizard</figcaption>
+    </figure>
+    <p class="sub" id="typewriter" aria-live="polite"></p>
+    <div class="age-badge"><span id="age">?</span><small>years of questionable magic</small></div>
+    <p id="countdown" class="countdown"></p>
+    <div class="hero-actions">
+      <a href="#blessings" class="btn gold">Read the birthday wishes &#10024;</a>
+      <button class="btn ghost" id="confetti-btn" type="button">Confetti charm 🎉</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Birthday wishes gallery -->
+    <section id="blessings" class="panel">
+      <h2>Birthday Wishes for <span class="js-name">Wizard</span></h2>
+      <p class="lead">Enchanted messages, delivered by our fastest owls.</p>
+      <div class="tabs" id="wish-tabs" role="tablist">
+        <button class="tab active" data-tone="all" role="tab">All</button>
+        <button class="tab" data-tone="funny" role="tab">Funny</button>
+        <button class="tab" data-tone="heartfelt" role="tab">Heartfelt</button>
+        <button class="tab" data-tone="magical" role="tab">Magical</button>
+      </div>
+      <figure class="wish-card" id="wish-card" aria-live="polite">
+        <blockquote id="wish-quote"></blockquote>
+        <figcaption id="wish-by"></figcaption>
+      </figure>
+      <div class="spell-row">
+        <button class="btn ghost" id="wish-prev" type="button" aria-label="Previous wish">&#8592; Prev</button>
+        <button class="btn gold" id="wish-random" type="button">Surprise me 🎲</button>
+        <button class="btn ghost" id="wish-next" type="button" aria-label="Next wish">Next &#8594;</button>
+      </div>
+      <div class="spell-row">
+        <button class="btn" id="wish-copy" type="button">Copy this wish</button>
+      </div>
+      <p id="wish-count" class="status"></p>
+    </section>
+
+    <!-- Sorting hat -->
+    <section id="hat" class="panel">
+      <h2>The Sorting Hat Speaks</h2>
+      <p class="lead">Even after all these years, the Hat insists on a re-sort. Answer honestly.</p>
+      <div id="quiz" class="quiz"></div>
+    </section>
+
+    <!-- Cake -->
+    <section id="cake-section" class="panel">
+      <h2>The Cake of Many Candles</h2>
+      <p class="lead">Cast <b>Nox</b> to extinguish the flames, <b>Incendio</b> to relight them.<br>Or tap a candle if you are a Muggle.</p>
+      <div class="cake-wrap">
+        <div class="cake" id="cake">
+          <div class="candles" id="candles"></div>
+          <div class="layer l1"></div>
+          <div class="layer l2"></div>
+          <div class="layer l3"></div>
+          <div class="plate"></div>
+        </div>
+      </div>
+      <div class="spell-row">
+        <button class="btn" id="nox">Nox 🪄</button>
+        <button class="btn ghost" id="incendio">Incendio 🔥</button>
+        <button class="btn gold" id="fireworks">Fireworks 🎆</button>
+      </div>
+      <p id="cake-msg" class="status"></p>
+    </section>
+
+    <!-- Report card -->
+    <section id="report" class="panel">
+      <h2>Official O.W.L. Results</h2>
+      <p class="lead">Leaked from the Ministry archives. Strictly confidential. Please share widely.</p>
+      <div class="grades" id="grades"></div>
+    </section>
+
+    <!-- Spells -->
+    <section id="spells" class="panel">
+      <h2>Spells for the Birthday Wizard</h2>
+      <p class="lead">Tap a spell. Side effects may include laughter.</p>
+      <div class="spells" id="spell-buttons"></div>
+      <div id="spell-output" class="spell-output" aria-live="polite">Pick a spell…</div>
+    </section>
+
+    <!-- Wishes -->
+    <section id="wishes" class="panel">
+      <h2>Your Own Howler</h2>
+      <p class="lead">Write your own wish on the enchanted parchment (saved only in your own browser).</p>
+      <form id="wish-form" class="wish-form">
+        <input id="wish-from" type="text" maxlength="30" placeholder="Your name" required>
+        <textarea id="wish-text" maxlength="200" rows="3" placeholder="Write your wish…" required></textarea>
+        <button class="btn" type="submit">Send by owl 🦉</button>
+      </form>
+      <div id="wish-list" class="wish-list"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Mischief managed. Made with 🪄 and way too much butterbeer.</p>
+    <p class="muted">Not affiliated with Hogwarts, the Ministry, or anyone who can actually do magic.</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
